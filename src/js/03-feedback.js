@@ -7,10 +7,6 @@ const message = form.elements.message;
 
 const LOCALSTORAGE_KEY = 'feedback-form-state';
 
-// Обʼєкт для збереження даних
-// const data = {};
-// const dataJSON = localStorage.getItem(LOCALSTORAGE_KEY);
-
 // Додаємо слехачів подій + оновлення сховища кожні 500 мілісекунд
 form.addEventListener('submit', onFormSubmit);
 form.addEventListener('input', throttle(onFormInput, 500));
