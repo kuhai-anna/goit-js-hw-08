@@ -27,7 +27,8 @@ function onFormSubmit(e) {
   e.preventDefault();
 
   if (email.value === '' || message.value === '') {
-    alert('Заповніть усі поля форми!');
+    const alertMessage = 'Заповніть усі поля форми!';
+    alert(alertMessage);
   } else {
     console.log(data);
 
