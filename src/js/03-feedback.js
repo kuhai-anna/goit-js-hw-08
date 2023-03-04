@@ -45,10 +45,10 @@ function onFormSubmit(e) {
 // Отримуємо значення полів
 // Записуємо його у сховище
 function onFormInput() {
-  const data = {};
-
-  data.email = email.value;
-  data.message = message.value;
+  const data = {
+    email: email.value,
+    message: message.value,
+  };
 
   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(data));
 }
