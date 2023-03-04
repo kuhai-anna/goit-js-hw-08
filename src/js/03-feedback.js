@@ -32,7 +32,7 @@ function onFormSubmit(e) {
   } else {
     console.log(data);
 
-    e.currentTarget.reset();
+    e.target.reset();
     localStorage.removeItem(LOCALSTORAGE_KEY);
   }
 }
