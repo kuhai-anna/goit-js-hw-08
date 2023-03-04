@@ -34,27 +34,12 @@ function onFormSubmit(e) {
     e.currentTarget.reset();
     localStorage.removeItem(LOCALSTORAGE_KEY);
   }
-
-  // if (email.value === '' && message.value === '') {
-  //   alert('Заповніть усі поля форми!');
-
-  //   // Видаляє порожній обʼєкт, якщо дані були введені, а потім видалені
-  //   localStorage.removeItem(LOCALSTORAGE_KEY);
-  // } else if (email.value === '' || message.value === '') {
-  //   alert('Заповніть усі поля форми!');
-  // } else {
-  //   console.log(data);
-
-  //   e.currentTarget.reset();
-  //   localStorage.removeItem(LOCALSTORAGE_KEY);
-  // }
 }
 
 // Отримуємо значення полів
 // Записуємо його у сховище
-function onFormInput() {
-  data.email = email.value;
-  data.message = message.value;
+function onFormInput(e) {
+  data[e.target.name] = e.target.value;
 
   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(data));
 }
