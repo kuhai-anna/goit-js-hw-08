@@ -8,8 +8,8 @@ const message = form.elements.message;
 const LOCALSTORAGE_KEY = 'feedback-form-state';
 
 // Обʼєкт для збереження даних
-const data = {};
-const dataJSON = localStorage.getItem(LOCALSTORAGE_KEY);
+// const data = {};
+// const dataJSON = localStorage.getItem(LOCALSTORAGE_KEY);
 
 // Додаємо слехачів подій + оновлення сховища кожні 500 мілісекунд
 form.addEventListener('submit', onFormSubmit);
@@ -30,17 +30,25 @@ function onFormSubmit(e) {
     const alertMessage = 'Заповніть усі поля форми!';
     alert(alertMessage);
   } else {
-    console.log(data);
+    try {
+      console.log(JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)));
+    } catch (error) {
+      console.log(error.name); // "SyntaxError"
+      console.log(error.message); // Unexpected token W in JSON at position 0
+    }
 
-    e.target.reset();
+    e.currentTarget.reset();
     localStorage.removeItem(LOCALSTORAGE_KEY);
   }
 }
 
 // Отримуємо значення полів
 // Записуємо його у сховище
-function onFormInput(e) {
-  data[e.target.name] = e.target.value;
+function onFormInput() {
+  const data = {};
+
+  data.email = email.value;
+  data.message = message.value;
 
   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(data));
 }
@@ -49,7 +57,7 @@ function onFormInput(e) {
 // Якщо там щось є, оновлюємо DOM
 function populateFormOutput() {
   try {
-    const dataParse = JSON.parse(dataJSON);
+    const dataParse = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY));
 
     if (dataParse) {
       email.value = dataParse.email;
@@ -60,3 +68,57 @@ function populateFormOutput() {
     console.log(error.message); // Unexpected token W in JSON at position 0
   }
 }
+
+// // Обʼєкт для збереження даних
+// const data = {};
+// const dataJSON = localStorage.getItem(LOCALSTORAGE_KEY);
+
+// // Додаємо слехачів подій + оновлення сховища кожні 500 мілісекунд
+// form.addEventListener('submit', onFormSubmit);
+// form.addEventListener('input', throttle(onFormInput, 500));
+
+// // Викликається при завантаженні або перезавантаженні сторінки
+// populateFormOutput();
+
+// // Зупиняємо поведінку по замовчуванню
+// // Виводимо повідомлення про необхідність заповнити усі поля, при цьому зберігаючи уже введені дані
+// // Виводимо у консоль обʼєкт з даними з форми
+// // Очищуємо форму
+// // Прибираємо повідомлення зі сховища
+// function onFormSubmit(e) {
+//   e.preventDefault();
+
+//   if (email.value === '' || message.value === '') {
+//     const alertMessage = 'Заповніть усі поля форми!';
+//     alert(alertMessage);
+//   } else {
+//     console.log(data);
+
+//     e.currentTarget.reset();
+//     localStorage.removeItem(LOCALSTORAGE_KEY);
+//   }
+// }
+
+// // Отримуємо значення полів
+// // Записуємо його у сховище
+// function onFormInput(e) {
+//   data[e.target.name] = e.target.value;
+
+//   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(data));
+// }
+
+// // Отримуємо дані зі сховища
+// // Якщо там щось є, оновлюємо DOM
+// function populateFormOutput() {
+//   try {
+//     const dataParse = JSON.parse(dataJSON);
+
+//     if (dataParse) {
+//       email.value = dataParse.email;
+//       message.value = dataParse.message;
+//     }
+//   } catch (error) {
+//     console.log(error.name); // "SyntaxError"
+//     console.log(error.message); // Unexpected token W in JSON at position 0
+//   }
+// }
