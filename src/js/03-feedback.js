@@ -7,6 +7,10 @@ const message = form.elements.message;
 
 const LOCALSTORAGE_KEY = 'feedback-form-state';
 
+// Обʼєкт для збереження даних
+const data = {};
+const dataJSON = localStorage.getItem(LOCALSTORAGE_KEY);
+
 // Додаємо слехачів подій + оновлення сховища кожні 500 мілісекунд
 form.addEventListener('submit', onFormSubmit);
 form.addEventListener('input', throttle(onFormInput, 500));
@@ -26,12 +30,9 @@ function onFormSubmit(e) {
     const alertMessage = 'Заповніть усі поля форми!';
     alert(alertMessage);
   } else {
-    try {
-      console.log(JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)));
-    } catch (error) {
-      console.log(error.name); // "SyntaxError"
-      console.log(error.message); // Unexpected token W in JSON at position 0
-    }
+    console.log(data);
+    data.email = '';
+    data.message = '';
 
     e.currentTarget.reset();
     localStorage.removeItem(LOCALSTORAGE_KEY);
@@ -40,11 +41,8 @@ function onFormSubmit(e) {
 
 // Отримуємо значення полів
 // Записуємо його у сховище
-function onFormInput() {
-  const data = {
-    email: email.value,
-    message: message.value,
-  };
+function onFormInput(e) {
+  data[e.target.name] = e.target.value;
 
   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(data));
 }
@@ -53,7 +51,7 @@ function onFormInput() {
 // Якщо там щось є, оновлюємо DOM
 function populateFormOutput() {
   try {
-    const dataParse = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY));
+    const dataParse = JSON.parse(dataJSON);
 
     if (dataParse) {
       email.value = dataParse.email;
@@ -64,17 +62,6 @@ function populateFormOutput() {
     console.log(error.message); // Unexpected token W in JSON at position 0
   }
 }
-
-// // Обʼєкт для збереження даних
-// const data = {};
-// const dataJSON = localStorage.getItem(LOCALSTORAGE_KEY);
-
-// // Додаємо слехачів подій + оновлення сховища кожні 500 мілісекунд
-// form.addEventListener('submit', onFormSubmit);
-// form.addEventListener('input', throttle(onFormInput, 500));
-
-// // Викликається при завантаженні або перезавантаженні сторінки
-// populateFormOutput();
 
 // // Зупиняємо поведінку по замовчуванню
 // // Виводимо повідомлення про необхідність заповнити усі поля, при цьому зберігаючи уже введені дані
@@ -88,7 +75,12 @@ function populateFormOutput() {
 //     const alertMessage = 'Заповніть усі поля форми!';
 //     alert(alertMessage);
 //   } else {
-//     console.log(data);
+//     try {
+//       console.log(JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY)));
+//     } catch (error) {
+//       console.log(error.name); // "SyntaxError"
+//       console.log(error.message); // Unexpected token W in JSON at position 0
+//     }
 
 //     e.currentTarget.reset();
 //     localStorage.removeItem(LOCALSTORAGE_KEY);
@@ -97,8 +89,11 @@ function populateFormOutput() {
 
 // // Отримуємо значення полів
 // // Записуємо його у сховище
-// function onFormInput(e) {
-//   data[e.target.name] = e.target.value;
+// function onFormInput() {
+//   const data = {
+//     email: email.value,
+//     message: message.value,
+//   };
 
 //   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(data));
 // }
@@ -107,7 +102,7 @@ function populateFormOutput() {
 // // Якщо там щось є, оновлюємо DOM
 // function populateFormOutput() {
 //   try {
-//     const dataParse = JSON.parse(dataJSON);
+//     const dataParse = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY));
 
 //     if (dataParse) {
 //       email.value = dataParse.email;
